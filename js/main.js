@@ -1,7 +1,8 @@
 import PreciseVideoPlayer from './preciseVideoPlayer.js';
 import PlaybackController from './playbackController.js';
 import Analyser from './analyser.js';
-import Compare from './compare.js'
+import Compare from './compare.js';
+import AvgValue from './avgValue.js';
 
 // URLs for PNG-sequences, adjust to use custom videos
 const baseURL = "/media/FerrisWheel/";
@@ -74,6 +75,14 @@ const sad = document.getElementById("sad");
 const mad = document.getElementById("mad");
 const mse = document.getElementById("mse");
 const psnr = document.getElementById("psnr");
+
+const avgMax = document.getElementById("avgMax");
+const avgSad = document.getElementById("avgSad");
+const avgMad = document.getElementById("avgMad");
+const avgMse = document.getElementById("avgMse");
+const avgPsnr = document.getElementById("avgPsnr");
+
+const avg = new AvgValue();
 // Render loop, updates frames during playback
 function render() {
   playbackController.render();
@@ -85,11 +94,19 @@ function render() {
     var comp = new Compare(a, b);
     comp.calcValues();
 
-    maximumError.textContent = 'Maximum Error: ' + comp.maxError;
-    sad.textContent = 'Sum of Absolute Differences: ' + comp.sad;
-    mad.textContent = 'Mean Absolute Difference: ' + comp.mad();
-    mse.textContent = 'Mean Squared Error: ' + comp.mse();
-    psnr.textContent = 'Peak-Signal-to-Noise-Ratio: ' + comp.psnr();    
+    avg.setValues(comp.maxError,comp.sad,comp.mad(),comp.mse(),comp.psnr());
+
+    maximumError.textContent = 'MAX: ' + comp.maxError;
+    sad.textContent = 'SAD: ' + comp.sad;
+    mad.textContent = 'MAD: ' + comp.mad();
+    mse.textContent = 'MSE: ' + comp.mse();
+    psnr.textContent = 'PSNR: ' + comp.psnr();  
+
+    avgMax.textContent = 'Avg: ' + avg.avgMaxError();
+    avgSad.textContent = 'Avg: ' + avg.avgSad();
+    avgMad.textContent = 'Avg: ' + avg.avgMad();
+    avgMse.textContent = 'Avg: ' + avg.avgMse();
+    avgPsnr.textContent = 'Avg: ' + avg.avgPsnr();
   }
 
   // console.log("Are they same? " + (a===b))
