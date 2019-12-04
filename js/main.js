@@ -1,5 +1,7 @@
 import PreciseVideoPlayer from './preciseVideoPlayer.js';
 import PlaybackController from './playbackController.js';
+import Analyser from './analyser.js';
+import Compare from './compare.js'
 
 // URLs for PNG-sequences, adjust to use custom videos
 const baseURL = "/media/FerrisWheel/";
@@ -61,13 +63,36 @@ btnPrevFrame.onclick = () => {
   playerLQ.prevFrame();
 }
 
+var analyserHQ = new Analyser(canvasHQ, playerHQ);
+var analyserLQ = new Analyser(canvasLQ, playerLQ);
+
 // Start Render loop
 render();
 
+const maximumError = document.getElementById("maximum_error");
+const sad = document.getElementById("sad");
+const mad = document.getElementById("mad");
+const mse = document.getElementById("mse");
+const psnr = document.getElementById("psnr");
 // Render loop, updates frames during playback
 function render() {
   playbackController.render();
-  
-  //console.log(playerHQ.newFrameAvailable());
+
+  if (playerHQ.newFrameAvailable()) {
+    const a = analyserHQ.newValues();
+    const b = analyserLQ.newValues();
+
+    var comp = new Compare(a, b);
+    comp.calcValues();
+
+    maximumError.textContent = 'Maximum Error: ' + comp.maxError;
+    sad.textContent = 'Sum of Absolute Differences: ' + comp.sad;
+    mad.textContent = 'Mean Absolute Difference: ' + comp.mad();
+    mse.textContent = 'Mean Squared Error: ' + comp.mse();
+    psnr.textContent = 'Peak-Signal-to-Noise-Ratio: ' + comp.psnr();    
+  }
+
+  // console.log("Are they same? " + (a===b))
+  // console.log(playerHQ.newFrameAvailable());
   requestAnimationFrame(render);
 }

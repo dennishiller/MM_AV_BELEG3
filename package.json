@@ -1,7 +1,7 @@
 {
   "name": "uebung_07",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Einleitung",
   "scripts": {
     "start": "live-server",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "live-server": "1.2.x"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dennishiller/MM_AV_BELEG3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dennishiller/MM_AV_BELEG3/issues"
+  },
+  "homepage": "https://github.com/dennishiller/MM_AV_BELEG3#readme"
 }
