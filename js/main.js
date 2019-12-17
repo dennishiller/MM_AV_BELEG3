@@ -32,7 +32,7 @@ let playerLQ = new PreciseVideoPlayer(canvasLQ, baseURL + lowQ);
 const lqCtx = canvasLQ.getContext('2d');
 
 // playback controller, keeps frames in sync between low and high quality player
-let playbackController = new PlaybackController(24);
+let playbackController = new PlaybackController(20);
 playbackController.addPlayer(playerLQ);
 playbackController.addPlayer(playerHQ);
 
@@ -107,7 +107,7 @@ function calculate() {
   const a = hqCtx.getImageData(0,0, canvasHQ.width, canvasHQ.height);
   const b = lqCtx.getImageData(0, 0, canvasLQ.width, canvasLQ.height);
 
-  // histogramHQ.draw(a.data);
+    
   var comp = new Compare(a, b);
   comp.calcValues();
 
@@ -129,4 +129,5 @@ function calculate() {
   avgMad.textContent = 'Avg: ' + aMad / iterator;
   avgMse.textContent = 'Avg: ' + aMse / iterator;
   avgPsnr.textContent = 'Avg: ' + aPsnr / iterator;
+  histogramHQ.draw(a.data);
 }

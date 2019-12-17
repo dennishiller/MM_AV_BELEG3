@@ -9,18 +9,13 @@ class histogram {
         var ctx = this.canvas.getContext('2d');
         var values = data;
         var width = 0.1; //bar width
-        var X = 10; // first bar position 
-        var base = 200;
-
-        for (var i = 0; i < values.length; i++) {
-            ctx.fillStyle = 'rgba(127,127,127)';
-            var h = values[i];
+        var X = 0; // first bar position 
+        for (var i = 0; i < data.length ; i++) {
+             ctx.fillStyle = 'rgba(1,1,1)';
+            var h = data[i];
             ctx.fillRect(X, this.canvas.height - h, width, h);
-
             X += width;
         }
-
-
     }
 
     reset(){
